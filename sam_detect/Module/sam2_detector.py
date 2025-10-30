@@ -111,7 +111,15 @@ class SAM2Detector(object):
             plt.show()
         return masks
 
-    def detectImageFile(self, image_file_path: str, render: bool = False) -> dict:
+    def detectImageFile(
+        self, image_file_path: str, render: bool = False
+    ) -> Union[dict, None]:
+        if not os.path.exists(image_file_path):
+            print("[ERROR][SAM2Detector::detectImageFile]")
+            print("\t image file not exist!")
+            print("\t image_file_path:", image_file_path)
+            return None
+
         image = Image.open(image_file_path)
         image = np.array(image.convert("RGB"))
         return self.detect(image, render)
