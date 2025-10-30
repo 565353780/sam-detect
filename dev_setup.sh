@@ -6,4 +6,4 @@ pip3 install torch torchvision \
   --index-url https://download.pytorch.org/whl/cu128
 pip install .
 
-pip install jupyter matplotlib
+pip install jupyter matplotlib opencv-python

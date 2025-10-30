@@ -8,6 +8,7 @@ from sam2.build_sam import build_sam2
 from sam2.automatic_mask_generator import SAM2AutomaticMaskGenerator
 
 from sam_detect.Config.model_config import MODEL_CONFIG_DICT
+from sam_detect.Method.render import show_anns
 
 
 os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
@@ -99,14 +100,18 @@ class SAM2Detector(object):
         self.mask_generator = SAM2AutomaticMaskGenerator(sam2)
         return True
 
-    def detect(self, image: np.ndarray) -> torch.Tensor:
-        plt.figure(figsize=(20, 20))
-        plt.imshow(image)
-        plt.axis("off")
-        plt.show()
-        return
+    def detect(self, image: np.ndarray, render: bool = False) -> dict:
+        masks = self.mask_generator.generate(image)
 
-    def detectImageFile(self, image_file_path: str) -> torch.Tensor:
+        if render:
+            plt.figure(figsize=(20, 20))
+            plt.imshow(image)
+            show_anns(masks)
+            plt.axis("off")
+            plt.show()
+        return masks
+
+    def detectImageFile(self, image_file_path: str, render: bool = False) -> dict:
         image = Image.open(image_file_path)
         image = np.array(image.convert("RGB"))
-        return self.detect(image)
+        return self.detect(image, render)

@@ -6,7 +6,8 @@ def demo():
     device = "cuda:0"
 
     image_file_path = "/home/chli/下载/test_room_pic.jpeg"
+    render = True
 
     sam2_detector = SAM2Detector(model_file_path, device)
-    sam2_detector.detectImageFile(image_file_path)
+    sam2_detector.detectImageFile(image_file_path, render)
     return True
